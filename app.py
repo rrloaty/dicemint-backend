@@ -4,12 +4,12 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Simple in-memory storage (reset on each restart)
+# Simulated database
 user_balances = {}
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def home():
-    return jsonify({"message": "DiceMint backend is live!"})
+    return "✅ DiceMint Backend is Live!"
 
 @app.route("/get_balance", methods=["POST"])
 def get_balance():
@@ -22,9 +22,9 @@ def get_balance():
 def update_balance():
     data = request.get_json()
     telegram_id = str(data.get("telegram_id"))
-    balance = int(data.get("balance", 0))
+    balance = data.get("balance", 0)
     user_balances[telegram_id] = balance
-    return jsonify({"status": "success", "balance": balance})
+    return jsonify({"success": True, "new_balance": balance})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
